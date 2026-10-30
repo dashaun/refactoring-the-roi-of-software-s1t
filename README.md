@@ -1,7 +1,7 @@
 # Refactoring the ROI of Software
 
 **Lessons from the Frontlines of OpenRewrite Adoption**  
-DaShaun Carter · Fiserv · 90-minute session
+DaShaun Carter · 90-minute session
 
 A public presentation about making software modernization a continuous workflow with OpenRewrite, AI-assisted recipes, and N-0 patching.
 
