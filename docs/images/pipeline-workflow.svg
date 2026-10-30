@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 820" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="boxTeal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#134E4A"/>
+      <stop offset="100%" stop-color="#0F2E3A"/>
+    </linearGradient>
+    <linearGradient id="boxBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E3A5F"/>
+      <stop offset="100%" stop-color="#152A44"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .box { rx: 14; stroke-width: 2; }
+    .title { font-size: 34px; font-weight: 800; fill: #EAF2FC; }
+    .band-label { font-size: 24px; font-weight: 700; letter-spacing: 0.14em; }
+    .box-label { font-size: 27px; font-weight: 700; fill: #EAF2FC; }
+    .sub { font-size: 21px; font-weight: 600; fill: #93A8C4; }
+    .arrow { stroke: #223350; stroke-width: 3; fill: none; }
+  </style>
+
+  <!-- ===== Band 1: CI/CD (what you have) ===== -->
+  <text class="band-label" x="80" y="90" fill="#60A5FA">CI / CD &#8212; YOU ALREADY HAVE THIS</text>
+
+  <g>
+    <rect class="box" x="80"  y="120" width="240" height="86" rx="14" fill="url(#boxBlue)" stroke="#3B82F6"/>
+    <text class="box-label" x="200" y="172" text-anchor="middle">commit</text>
+
+    <rect class="box" x="380" y="120" width="240" height="86" rx="14" fill="url(#boxBlue)" stroke="#3B82F6"/>
+    <text class="box-label" x="500" y="172" text-anchor="middle">build</text>
+
+    <rect class="box" x="680" y="120" width="240" height="86" rx="14" fill="url(#boxBlue)" stroke="#3B82F6"/>
+    <text class="box-label" x="800" y="172" text-anchor="middle">test</text>
+
+    <rect class="box" x="980" y="120" width="240" height="86" rx="14" fill="url(#boxBlue)" stroke="#3B82F6"/>
+    <text class="box-label" x="1100" y="172" text-anchor="middle">deploy</text>
+
+    <path class="arrow" d="M 320 163 L 372 163 M 366 155 L 372 163 L 366 171"/>
+    <path class="arrow" d="M 620 163 L 672 163 M 666 155 L 672 163 L 666 171"/>
+    <path class="arrow" d="M 920 163 L 972 163 M 966 155 L 972 163 L 966 171"/>
+
+    <!-- flowing dots -->
+    <circle r="7" fill="#60A5FA">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite" path="M 320 163 L 372 163"/>
+    </circle>
+    <circle r="7" fill="#60A5FA">
+      <animateMotion dur="3s" begin="-1s" repeatCount="indefinite" path="M 620 163 L 672 163"/>
+    </circle>
+    <circle r="7" fill="#60A5FA">
+      <animateMotion dur="3s" begin="-2s" repeatCount="indefinite" path="M 920 163 L 972 163"/>
+    </circle>
+  </g>
+
+  <!-- deploy loops back down to detection -->
+  <path class="arrow" d="M 1100 206 L 1100 300 L 300 300 L 300 380 M 292 372 L 300 380 L 308 372" stroke-dasharray="8 8" stroke="#93A8C4"/>
+  <text class="sub" x="700" y="288" text-anchor="middle">every merge, every day: what drifted?</text>
+
+  <!-- ===== Band 2: the missing workflow ===== -->
+  <text class="band-label" x="80" y="360" fill="#2DD4BF">CONTINUOUS REMEDIATION &#8212; THE WORKFLOW YOU'RE MISSING</text>
+
+  <g>
+    <rect class="box" x="80" y="400" width="240" height="110" rx="14" fill="url(#boxTeal)" stroke="#2DD4BF"/>
+    <text class="box-label" x="200" y="446" text-anchor="middle">detect</text>
+    <text class="sub" x="200" y="482" text-anchor="middle">CVEs &#183; N-1 &#183; drift</text>
+
+    <rect class="box" x="380" y="400" width="240" height="110" rx="14" fill="url(#boxTeal)" stroke="#2DD4BF"/>
+    <text class="box-label" x="500" y="446" text-anchor="middle">rewrite</text>
+    <text class="sub" x="500" y="482" text-anchor="middle">OpenRewrite recipe</text>
+
+    <rect class="box" x="680" y="400" width="240" height="110" rx="14" fill="url(#boxTeal)" stroke="#2DD4BF"/>
+    <text class="box-label" x="800" y="446" text-anchor="middle">pull request</text>
+    <text class="sub" x="800" y="482" text-anchor="middle">reviewable, testable</text>
+
+    <rect class="box" x="980" y="400" width="240" height="110" rx="14" fill="url(#boxTeal)" stroke="#2DD4BF"/>
+    <text class="box-label" x="1100" y="446" text-anchor="middle">merge</text>
+    <text class="sub" x="1100" y="482" text-anchor="middle" font-size="18">same review gates</text>
+
+    <path class="arrow" stroke="#2DD4BF" d="M 320 455 L 372 455 M 366 447 L 372 455 L 366 463"/>
+    <path class="arrow" stroke="#2DD4BF" d="M 620 455 L 672 455 M 666 447 L 672 455 L 666 463"/>
+    <path class="arrow" stroke="#2DD4BF" d="M 920 455 L 972 455 M 966 447 L 972 455 L 966 463"/>
+
+    <circle r="7" fill="#2DD4BF">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite" path="M 320 455 L 372 455"/>
+    </circle>
+    <circle r="7" fill="#2DD4BF">
+      <animateMotion dur="3s" begin="-1s" repeatCount="indefinite" path="M 620 455 L 672 455"/>
+    </circle>
+    <circle r="7" fill="#2DD4BF">
+      <animateMotion dur="3s" begin="-2s" repeatCount="indefinite" path="M 920 455 L 972 455"/>
+    </circle>
+  </g>
+
+  <!-- merge arrow back up into CI/CD -->
+  <path class="arrow" d="M 1220 400 L 1220 214 M 1212 222 L 1220 214 L 1228 222" stroke="#2DD4BF"/>
+
+  <!-- cadence note -->
+  <g transform="translate(1330, 455)">
+    <rect x="0" y="-34" width="200" height="68" rx="14" fill="#2DD4BF" fill-opacity="0.10" stroke="#2DD4BF" stroke-opacity="0.6"/>
+    <text x="100" y="-4" text-anchor="middle" font-size="22" font-weight="700" fill="#2DD4BF">not once a year.</text>
+    <text x="100" y="24" text-anchor="middle" font-size="22" font-weight="700" fill="#2DD4BF">every day.</text>
+    <animate attributeName="opacity" values="0.75;1;0.75" dur="3s" repeatCount="indefinite"/>
+  </g>
+</svg>

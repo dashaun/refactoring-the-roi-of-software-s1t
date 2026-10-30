@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <radialGradient id="glowTeal" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2DD4BF" stop-opacity="0.28"/>
+      <stop offset="60%" stop-color="#2DD4BF" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#2DD4BF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowViolet" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#A78BFA" stop-opacity="0.24"/>
+      <stop offset="60%" stop-color="#A78BFA" stop-opacity="0.07"/>
+      <stop offset="100%" stop-color="#A78BFA" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowAmber" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FBBF24" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#FBBF24" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#223350" stroke-opacity="0.35" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="base" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0C1526"/>
+      <stop offset="100%" stop-color="#080E1A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#base)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+
+  <g>
+    <ellipse cx="360" cy="240" rx="640" ry="520" fill="url(#glowTeal)">
+      <animate attributeName="cx" values="360;520;360" dur="26s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="240;340;240" dur="26s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1560" cy="860" rx="700" ry="560" fill="url(#glowViolet)">
+      <animate attributeName="cx" values="1560;1420;1560" dur="31s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="860;740;860" dur="31s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="1500" cy="180" rx="500" ry="400" fill="url(#glowAmber)">
+      <animate attributeName="cx" values="1500;1620;1500" dur="37s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
+  <!-- abstract "recipe lines" motif: a few drifting transformation arrows -->
+  <g stroke="#2DD4BF" stroke-opacity="0.14" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M -40 820 C 300 780, 520 900, 900 840 S 1500 760, 1980 820">
+      <animate attributeName="stroke-opacity" values="0.06;0.18;0.06" dur="9s" repeatCount="indefinite"/>
+    </path>
+    <path d="M -40 300 C 260 340, 560 240, 940 300 S 1520 380, 1980 300" stroke="#60A5FA">
+      <animate attributeName="stroke-opacity" values="0.12;0.05;0.12" dur="13s" repeatCount="indefinite"/>
+    </path>
+    <path d="M -40 560 C 340 520, 620 640, 980 570 S 1540 500, 1980 560" stroke="#A78BFA">
+      <animate attributeName="stroke-opacity" values="0.09;0.16;0.09" dur="11s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

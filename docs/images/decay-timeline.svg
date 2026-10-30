@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 780" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="gapfill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F87171" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#F87171" stop-opacity="0.04"/>
+    </linearGradient>
+    <linearGradient id="latestfill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2DD4BF" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#2DD4BF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .lbl { fill: #93A8C4; font-size: 26px; font-weight: 600; }
+    .lbl-strong { fill: #EAF2FC; font-size: 30px; font-weight: 800; }
+    .tag { font-size: 24px; font-weight: 700; }
+    .latest { stroke: #2DD4BF; stroke-width: 6; fill: none; stroke-linejoin: round; }
+    .yours  { stroke: #FBBF24; stroke-width: 6; fill: none; stroke-linejoin: round; }
+    .axis { stroke: #223350; stroke-width: 2; }
+  </style>
+
+  <!-- gap area between the two lines (drawn under) -->
+  <path d="M 120 250 L 200 250 L 200 180 L 420 180 L 420 250 L 700 250 L 700 330 L 900 330 L 900 250 L 1120 250 L 1120 330 L 1340 330 L 1340 250 L 1420 250 L 1420 420 L 1340 420 L 1340 500 L 1120 500 L 1120 420 L 900 420 L 900 500 L 700 500 L 700 420 L 420 420 L 420 500 L 200 500 L 200 420 L 120 420 Z"
+        fill="url(#gapfill)">
+    <animate attributeName="opacity" values="0.5;1;0.5" dur="4s" repeatCount="indefinite"/>
+  </path>
+
+  <!-- area under latest line -->
+  <path d="M 120 250 L 200 250 L 200 180 L 420 180 L 420 250 L 700 250 L 700 330 L 900 330 L 900 250 L 1120 250 L 1120 330 L 1340 330 L 1340 250 L 1420 250 L 1420 120 L 120 120 Z"
+        fill="url(#latestfill)" opacity="0.7"/>
+
+  <!-- latest (N-0) steps upward every 6 months -->
+  <path class="latest" d="M 120 250 L 200 250 L 200 180 L 420 180 L 420 250 L 700 250 L 700 330 L 900 330 L 900 250 L 1120 250 L 1120 330 L 1340 330 L 1340 250 L 1420 250"/>
+
+  <!-- yours: upgrades that lag more and more -->
+  <path class="yours" d="M 120 250 L 200 250 L 200 420 L 420 420 L 420 500 L 700 500 L 700 420 L 900 420 L 900 500 L 1120 500 L 1120 420 L 1340 420 L 1340 500 L 1420 500"/>
+
+  <!-- axes -->
+  <line class="axis" x1="120" y1="640" x2="1460" y2="640"/>
+  <text class="lbl" x="1465" y="648" text-anchor="start">time</text>
+
+  <!-- vertical event markers -->
+  <g font-size="22" font-weight="600" fill="#93A8C4">
+    <text x="200" y="700" text-anchor="middle">2022</text>
+    <text x="420" y="700" text-anchor="middle">2023</text>
+    <text x="700" y="700" text-anchor="middle">2024</text>
+    <text x="900" y="700" text-anchor="middle">2025</text>
+    <text x="1120" y="700" text-anchor="middle">2026</text>
+    <text x="1340" y="700" text-anchor="middle">2027</text>
+  </g>
+
+  <!-- labels on lines -->
+  <g>
+    <text class="tag" x="140" y="96" fill="#2DD4BF">what's available</text>
+    <text class="tag" x="140" y="586" fill="#FBBF24">what you're running</text>
+  </g>
+
+  <!-- drift labels inside the gap -->
+  <g font-size="24" font-weight="700" fill="#F87171" text-anchor="middle">
+    <text x="560" y="360">N-1</text>
+    <text x="1010" y="470">N-2</text>
+    <text x="1230" y="470" opacity="0">
+      <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.1;0.35;1" dur="6s" repeatCount="indefinite"/>
+      N-3
+    </text>
+    <text x="1230" y="380" opacity="0">every quarter you wait, the gap compounds
+      <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.35;0.6;1" dur="6s" repeatCount="indefinite"/>
+    </text>
+  </g>
+
+  <!-- EOL warning marker -->
+  <g transform="translate(1230, 545)">
+    <rect x="-150" y="-26" width="300" height="40" rx="20" fill="#F87171" fill-opacity="0.15" stroke="#F87171" stroke-opacity="0.5"/>
+    <text x="0" y="2" text-anchor="middle" font-size="22" font-weight="700" fill="#F87171">support ends. unmaintained.</text>
+    <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;0.5;0.7;1" dur="6s" repeatCount="indefinite"/>
+  </g>
+</svg>

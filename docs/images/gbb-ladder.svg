@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="t1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1E3A5F"/><stop offset="100%" stop-color="#152A44"/>
+    </linearGradient>
+    <linearGradient id="t2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#155E54"/><stop offset="100%" stop-color="#0F2E3A"/>
+    </linearGradient>
+    <linearGradient id="t3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3D4E1F"/><stop offset="100%" stop-color="#2A3A14"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .tier { font-size: 44px; font-weight: 800; }
+    .sub { font-size: 22px; font-weight: 600; fill: #93A8C4; }
+  </style>
+
+  <!-- three ascending tiers -->
+  <g>
+    <rect x="120" y="440" width="420" height="180" rx="18" fill="url(#t1)" stroke="#60A5FA" stroke-opacity="0.6" stroke-width="2"/>
+    <text class="tier" x="330" y="520" text-anchor="middle" fill="#60A5FA">good</text>
+    <text class="sub" x="330" y="560" text-anchor="middle">one team, one app, done by hand</text>
+  </g>
+  <g>
+    <rect x="590" y="300" width="420" height="320" rx="18" fill="url(#t2)" stroke="#2DD4BF" stroke-opacity="0.6" stroke-width="2"/>
+    <text class="tier" x="800" y="390" text-anchor="middle" fill="#2DD4BF">better</text>
+    <text class="sub" x="800" y="430" text-anchor="middle">automated where it counts,</text>
+    <text class="sub" x="800" y="464" text-anchor="middle">visibility across dependencies,</text>
+    <text class="sub" x="800" y="498" text-anchor="middle">measured in dollars</text>
+  </g>
+  <g>
+    <rect x="1060" y="160" width="420" height="460" rx="18" fill="url(#t3)" stroke="#FBBF24" stroke-opacity="0.6" stroke-width="2"/>
+    <text class="tier" x="1270" y="260" text-anchor="middle" fill="#FBBF24">best</text>
+    <text class="sub" x="1270" y="300" text-anchor="middle">remediation is a workflow</text>
+    <text class="sub" x="1270" y="334" text-anchor="middle">that runs org-wide,</text>
+    <text class="sub" x="1270" y="368" text-anchor="middle">proactive by default,</text>
+    <text class="sub" x="1270" y="402" text-anchor="middle">carried by migration engineers</text>
+    <animate attributeName="opacity" values="0.92;1;0.92" dur="3.5s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- floor line -->
+  <line x1="80" y1="622" x2="1520" y2="622" stroke="#223350" stroke-width="2"/>
+
+  <text x="120" y="676" class="sub">most orgs live here</text>
+  <text x="1480" y="676" class="sub" text-anchor="end">where the ROI flips</text>
+</svg>

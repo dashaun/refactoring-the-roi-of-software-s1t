@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <style>
+    .panel-title { font-size: 30px; font-weight: 800; }
+    .cap { font-size: 25px; font-weight: 700; }
+    .muted { fill: #93A8C4; font-size: 22px; font-weight: 600; }
+    .diffline { stroke-width: 7; fill: none; stroke-linecap: round; }
+  </style>
+
+  <!-- ===== left panel: agent runs ===== -->
+  <rect x="40" y="40" width="700" height="640" rx="22" fill="#111C2F" stroke="#223350" stroke-width="2"/>
+  <text class="panel-title" x="390" y="110" text-anchor="middle" fill="#F87171">"just use AI"</text>
+  <text class="muted" x="390" y="148" text-anchor="middle">illustration: repeated runs can vary</text>
+
+  <!-- five chaotic diff traces -->
+  <g stroke-linejoin="round">
+    <path class="diffline" stroke="#F87171" d="M 100 240 C 180 180, 220 320, 300 250 S 420 160, 470 290 S 580 330, 660 220">
+      <animate attributeName="opacity" values="1;0.35;1" dur="5s" repeatCount="indefinite"/>
+    </path>
+    <path class="diffline" stroke="#FBBF24" d="M 100 260 C 200 330, 260 190, 340 290 S 440 350, 520 230 S 610 180, 660 300">
+      <animate attributeName="opacity" values="0.4;1;0.4" dur="6s" repeatCount="indefinite"/>
+    </path>
+    <path class="diffline" stroke="#A78BFA" d="M 100 210 C 160 290, 260 220, 320 320 S 460 260, 540 340 S 630 260, 660 250">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="7s" repeatCount="indefinite"/>
+    </path>
+    <path class="diffline" stroke="#60A5FA" d="M 100 330 C 190 250, 250 350, 350 260 S 430 180, 520 320 S 600 350, 660 230">
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="8s" repeatCount="indefinite"/>
+    </path>
+    <path class="diffline" stroke="#F87171" stroke-dasharray="2 14" d="M 100 300 C 220 220, 280 340, 380 300 S 520 220, 660 330">
+      <animate attributeName="opacity" values="0.3;0.9;0.3" dur="4s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <text class="cap" x="390" y="580" text-anchor="middle" fill="#F87171">brilliant once. unpredictable at scale.</text>
+  <text class="muted" x="390" y="622" text-anchor="middle">which run do you trust with 400 repositories?</text>
+
+  <!-- ===== right panel: recipe runs ===== -->
+  <rect x="860" y="40" width="700" height="640" rx="22" fill="#111C2F" stroke="#2DD4BF" stroke-opacity="0.55" stroke-width="2"/>
+  <text class="panel-title" x="1210" y="110" text-anchor="middle" fill="#2DD4BF">"run this recipe"</text>
+  <text class="muted" x="1210" y="148" text-anchor="middle">fixed recipe &#183; fixed input &#183; repeatable</text>
+
+  <!-- five identical runs converging into one diff -->
+  <g>
+    <!-- run labels + identical arrows -->
+    <g font-size="20" font-weight="700" fill="#2DD4BF" text-anchor="end">
+      <text x="945" y="192">run 1</text>
+      <text x="945" y="212" opacity="0.85">run 2</text>
+      <text x="945" y="232" opacity="0.7">run 3</text>
+      <text x="945" y="252" opacity="0.55">run 4</text>
+      <text x="945" y="272" opacity="0.4">run 5</text>
+    </g>
+    <g class="diffline" stroke="#2DD4BF">
+      <path d="M 965 186 L 1020 280"/>
+      <path d="M 965 206 L 1020 280"/>
+      <path d="M 965 226 L 1020 280"/>
+      <path d="M 965 246 L 1020 280"/>
+      <path d="M 965 266 L 1020 280"/>
+    </g>
+    <circle r="6" fill="#2DD4BF">
+      <animateMotion dur="2.5s" begin="0s" repeatCount="indefinite" path="M 965 186 L 1020 280"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF" opacity="0.7">
+      <animateMotion dur="2.5s" begin="-0.5s" repeatCount="indefinite" path="M 965 206 L 1020 280"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF" opacity="0.5">
+      <animateMotion dur="2.5s" begin="-1s" repeatCount="indefinite" path="M 965 226 L 1020 280"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF" opacity="0.35">
+      <animateMotion dur="2.5s" begin="-1.5s" repeatCount="indefinite" path="M 965 246 L 1020 280"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF" opacity="0.2">
+      <animateMotion dur="2.5s" begin="-2s" repeatCount="indefinite" path="M 965 266 L 1020 280"/>
+    </circle>
+
+    <!-- one clean diff block, identical every time -->
+    <g transform="translate(1030, 280)">
+      <rect x="0" y="0" width="460" height="130" rx="10" fill="#0D1526" stroke="#223350"/>
+      <text x="20" y="40" font-family="Menlo, Consolas, monospace" font-size="24" fill="#F87171">- toolchain.java 8</text>
+      <text x="20" y="74" font-family="Menlo, Consolas, monospace" font-size="24" fill="#2DD4BF">+ toolchain.java 25</text>
+      <text x="20" y="108" font-family="Menlo, Consolas, monospace" font-size="24" fill="#93A8C4">3 files changed. zero surprises.</text>
+      <animate attributeName="opacity" values="0.7;1;0.7" dur="3s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- same diff, five times over -->
+    <g font-size="22" font-weight="700" fill="#2DD4BF">
+      <text x="1030" y="200">fixed input; fixed transformation</text>
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+    </g>
+  </g>
+
+  <text class="cap" x="1210" y="580" text-anchor="middle" fill="#2DD4BF">deterministic. reviewable. repeatable.</text>
+  <text class="muted" x="1210" y="622" text-anchor="middle">the 400th repository runs exactly like the first</text>
+
+  <!-- divider -->
+  <line x1="800" y1="60" x2="800" y2="660" stroke="#223350" stroke-width="2" stroke-dasharray="4 10"/>
+</svg>

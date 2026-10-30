@@ -1,0 +1,1007 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<meta name="description" content="DaShaun Carter's Fiserv presentation on continuous modernization, OpenRewrite, AI agents, and the cost of software maintenance.">
+		<title>Refactoring the ROI of Software | Fiserv</title>
+
+		<link rel="icon" href="data:,">
+
+		<link rel="stylesheet" href="./reveal.js/dist/reset.css">
+		<link rel="stylesheet" href="./reveal.js/dist/reveal.css">
+		<link rel="stylesheet" href="./reveal.js/dist/theme/black.css">
+
+		<link rel="stylesheet" href="./reveal.js/plugin/highlight/monokai.css">
+
+		<style>
+			:root {
+				--ink: #0B1220;
+				--surface: #111C2F;
+				--line: #223350;
+				--text: #EAF2FC;
+				--muted: #93A8C4;
+				--teal: #2DD4BF;
+				--amber: #FBBF24;
+				--red: #F87171;
+				--blue: #60A5FA;
+				--violet: #A78BFA;
+			}
+
+			.reveal {
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				font-size: 40px;
+				color: var(--text);
+			}
+
+			.reveal .slides {
+				text-align: center;
+			}
+			.reveal .slides section { text-align: center; }
+			.reveal blockquote { text-align: center; }
+			.reveal .big, .reveal .muted { text-wrap: balance; }
+
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+				font-weight: 800;
+				letter-spacing: -0.02em;
+				text-transform: none;
+				color: var(--text);
+			}
+
+			.reveal h1 { font-size: 2.15em; line-height: 1.08; }
+			.reveal h2 { font-size: 1.65em; line-height: 1.12; text-wrap: balance; }
+			.reveal h3 { font-size: 1.2em; }
+
+			.reveal p, .reveal li {
+				font-weight: 500;
+				color: var(--text);
+			}
+
+			.reveal ul {
+				display: inline-block;
+				text-align: left;
+				list-style: none;
+			}
+
+			.reveal ul > li::marker { content: none; }
+			.reveal ul > li::before {
+				content: "";
+				display: inline-block;
+				width: 0.45em; height: 0.45em;
+				border-radius: 3px;
+				background: var(--teal);
+				margin-right: 0.6em;
+				transform: rotate(45deg) translateY(-0.05em);
+			}
+			.reveal ul.red > li::before { background: var(--red); }
+			.reveal ul.amber > li::before { background: var(--amber); }
+			.reveal ul.blue > li::before { background: var(--blue); }
+
+			/* Kicker: small caps section label above the headline */
+			.kicker {
+				display: inline-block;
+				font-size: 0.55em;
+				font-weight: 700;
+				letter-spacing: 0.22em;
+				text-transform: uppercase;
+				color: var(--teal);
+				margin-bottom: 0.4em;
+			}
+			.kicker.amber { color: var(--amber); }
+			.kicker.red { color: var(--red); }
+			.kicker.blue { color: var(--blue); }
+			.kicker.violet { color: var(--violet); }
+
+			/* Big one-line statement slide */
+			.reveal .big {
+				font-size: 1.75em;
+				font-weight: 800;
+				line-height: 1.15;
+				letter-spacing: -0.02em;
+			}
+			.reveal .big .accent { color: var(--teal); }
+			.reveal .big .warn { color: var(--red); }
+			.reveal .big .gold { color: var(--amber); }
+
+			.reveal .muted { color: var(--muted); }
+			.reveal .teal { color: var(--teal); }
+			.reveal .amber { color: var(--amber); }
+			.reveal .red { color: var(--red); }
+			.reveal .blue { color: var(--blue); }
+			.reveal .violet { color: var(--violet); }
+
+			/* Stat blocks */
+			.stats {
+				display: flex;
+				gap: 0.8em;
+				justify-content: center;
+				align-items: stretch;
+			}
+			.stat {
+				background: linear-gradient(180deg, rgba(34,51,80,0.55), rgba(17,28,47,0.85));
+				border: 1px solid var(--line);
+				border-radius: 18px;
+				padding: 0.5em 0.9em;
+				min-width: 3.2em;
+			}
+			.stat .n {
+				font-size: 1.9em;
+				font-weight: 800;
+				letter-spacing: -0.03em;
+				line-height: 1.05;
+			}
+			.stat .l {
+				font-size: 0.6em;
+				font-weight: 700;
+				color: #B9C7DC;
+				letter-spacing: 0.08em;
+				text-transform: uppercase;
+				margin-top: 0.25em;
+			}
+
+			/* Panel container for graphics */
+			.frame {
+				background: rgba(16,27,48,0.6);
+				border: 1px solid var(--line);
+				border-radius: 20px;
+				padding: 10px 16px;
+				display: inline-block;
+				box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+			}
+			.reveal img.clean {
+				background: none;
+				border: none;
+				box-shadow: none;
+				margin: 0;
+			}
+
+			.reveal .frame pre {
+				width: auto;
+				margin: 0.15em 0;
+				box-shadow: none;
+			}
+			.reveal .frame pre code {
+				overflow: visible;
+				max-height: none;
+			}
+
+			/* Results table */
+			.reveal table {
+				border-collapse: collapse;
+				margin: 0 auto;
+				width: 88%;
+				font-size: 0.72em;
+				border-bottom: 1px solid var(--line);
+			}
+			.reveal table th, .reveal table td {
+				border: 1px solid var(--line);
+				padding: 0.35em 0.5em;
+				text-align: center;
+			}
+			.reveal table th {
+				background: rgba(45,212,191,0.10);
+				font-size: 0.8em;
+				letter-spacing: 0.06em;
+				text-transform: uppercase;
+				font-weight: 800;
+			}
+			.reveal table td.l {
+				text-align: left;
+				font-weight: 700;
+				color: var(--muted);
+			}
+			.reveal table td.zero { color: var(--teal); font-weight: 800; }
+			.reveal table td.good { color: var(--teal); font-weight: 700; }
+			.reveal table td.mid  { color: var(--amber); font-weight: 700; }
+			.reveal table td.bad  { color: var(--red); font-weight: 700; }
+
+			/* Columns */
+			.cols {
+				display: flex;
+				gap: 1.2em;
+				justify-content: center;
+				align-items: stretch;
+				width: 92%;
+				margin: 0 auto;
+			}
+			.col {
+				flex: 1 1 0;
+				background: rgba(16,27,48,0.55);
+				border: 1px solid var(--line);
+				border-radius: 18px;
+				padding: 0.5em 0.8em;
+				text-align: left;
+			}
+			.col h3 { margin-top: 0.1em; margin-bottom: 0.35em; font-size: 0.95em; }
+			.col.teal { border-top: 4px solid var(--teal); }
+			.col.amber { border-top: 4px solid var(--amber); }
+			.col.red { border-top: 4px solid var(--red); }
+			.col.blue { border-top: 4px solid var(--blue); }
+			.col.violet { border-top: 4px solid var(--violet); }
+			.col ul { font-size: 0.72em; }
+			.col ul li { margin: 0.3em 0; }
+
+			/* Quote slide */
+			.reveal blockquote {
+				background: none;
+				border: none;
+				box-shadow: none;
+				margin: 0 auto;
+				width: auto;
+				max-width: 90%;
+				font-size: 1.35em;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 1.3;
+			}
+			.reveal .who {
+				display: block;
+				margin-top: 0.5em;
+				font-size: 0.6em;
+				font-weight: 600;
+				color: var(--muted);
+				letter-spacing: 0.06em;
+			}
+
+			/* Code */
+			.reveal code {
+				font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+				font-size: 0.85em;
+				background: rgba(45,212,191,0.08);
+				color: var(--teal);
+				border-radius: 6px;
+				padding: 0.05em 0.25em;
+			}
+			.reveal pre code {
+				display: block;
+				background: #0D1526;
+				border: 1px solid var(--line);
+				border-radius: 14px;
+				color: var(--text);
+				padding: 0.6em 0.8em;
+				line-height: 1.35;
+				box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+			}
+
+			/* Footer */
+			.deck-foot {
+				position: fixed;
+				bottom: 14px;
+				left: 0;
+				right: 0;
+				display: flex;
+				justify-content: space-between;
+				padding: 0 40px;
+				font-size: 15px;
+				font-weight: 600;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				color: rgba(147,168,196,0.75);
+				z-index: 30;
+				pointer-events: none;
+			}
+
+			/* Progress bar */
+			.reveal .progress {
+				color: var(--teal);
+				height: 5px;
+			}
+
+			/* Dim default controls */
+			.reveal .controls {
+				color: var(--muted);
+			}
+
+			/* Slide numbering styling in corners of vertical stacks */
+			.reveal section img {
+				background: none;
+				border: none;
+				box-shadow: none;
+			}
+
+			/* Widescreen composition scaled to the browser viewport. */
+			.reveal .slides section { box-sizing: border-box; }
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4 { font-family: inherit; }
+			.reveal section img {
+				max-height: 470px;
+				max-width: 100%;
+				object-fit: contain;
+				margin: 12px auto;
+			}
+			.reveal .title-slide { max-width: 1100px; margin-inline: auto; }
+			.reveal .title-slide h1 { margin-bottom: 28px; }
+			.reveal .title-subtitle { font-size: 0.9em; line-height: 1.35; color: var(--muted); }
+			.reveal .title-byline { font-size: 0.55em; margin-top: 36px; color: var(--teal); }
+			.col { min-width: 0; }
+			.col ul { display: block; margin-left: 0; }
+			.col ul li { padding-left: 0.95em; position: relative; }
+			.col ul > li::before { position: absolute; left: 0; top: 0.48em; width: 0.3em; height: 0.3em; margin: 0; }
+			.stat { flex: 1 1 0; min-width: 0; padding: 0.65em 0.5em; }
+			.stat .n, .reveal table { font-variant-numeric: tabular-nums; }
+			.stat .l { font-size: 0.52em; line-height: 1.4; letter-spacing: 0.04em; }
+			.reveal table th:first-child, .reveal table td:first-child { text-align: left; }
+			.reveal a { color: var(--teal); text-underline-offset: 0.15em; }
+			.reveal a:focus-visible { outline: 3px solid var(--amber); outline-offset: 5px; }
+			.reveal ::selection { background: var(--teal); color: var(--ink); }
+			@media (max-width: 700px) {
+				.deck-foot { padding-inline: 16px; font-size: 10px; letter-spacing: 0.04em; }
+				.deck-foot span:last-child { display: none; }
+			}
+			@media (prefers-reduced-motion: reduce) {
+				.reveal .slides section { transition: none !important; }
+			}
+		</style>
+	</head>
+	<body>
+		<noscript>This presentation requires JavaScript. Enable it to view the slides.</noscript>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<!-- .slide: data-background-image="./images/bg-hero.svg" data-background-size="cover" -->
+
+<div class="title-slide">
+
+# Refactoring the ROI<br/>of Software
+
+<p class="title-subtitle">Lessons from the Frontlines<br/>of OpenRewrite Adoption</p>
+<p class="title-byline">DaShaun Carter &middot; Fiserv</p>
+
+</div>
+
+---
+
+## Our 90 minutes
+
+<table>
+<tr><th>Topic</th><th>Minutes</th></tr>
+<tr><td>Modernization and the CI/CD workflow</td><td>8</td></tr>
+<tr><td>Live demo: analyze, upgrade, patch</td><td>18</td></tr>
+<tr><td>Why not just use AI?</td><td>15</td></tr>
+<tr><td>N-0 and adoption across repositories</td><td>8</td></tr>
+<tr><td>Upgrade evidence and review decisions</td><td>8</td></tr>
+<tr><td>Takeaways</td><td>3</td></tr>
+<tr><td>Breaks, spread through the session</td><td>15</td></tr>
+<tr><td>Q&amp;A</td><td>15</td></tr>
+</table>
+
+<div class="muted" style="font-size:0.65em; margin-top:0.5em">60 minutes of content, 15 minutes for breaks, and 15 minutes for Q&amp;A.</div>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<span class="kicker red">the problem</span>
+
+## Who here has put off<br/>a migration?
+
+<div class="big">"We'll do it <span class="warn">next sprint</span>."</div>
+
+---
+
+## Software over time
+
+<img src="images/decay-timeline.svg" alt="Software versions drift further behind over time" style="height: 640px"/>
+
+---
+
+<span class="kicker red">the problem</span>
+
+<div class="big">Your production software is <span class="warn">unpatched</span>.</div>
+
+<div class="big muted">Your business runs on it <span class="gold">anyway</span>.</div>
+
+---
+
+## Every CVE rings the dinner bell
+
+<img src="images/dinnerbell.png" alt="CVEs are the dinner bell for bad actors" style="height: 520px; border-radius: 16px"/>
+
+---
+
+<span class="kicker red">the problem</span>
+
+<div class="big" style="font-size:1.5em">We priced maintenance as a <span class="warn">loss</span>.</div>
+
+<div class="big" style="font-size:1.5em">It's time to <span class="accent">refactor the ROI</span>.</div>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<span class="kicker blue">the shift</span>
+
+## CI/CD solved delivery
+
+<div class="cols">
+  <div class="col blue">
+    <h3>CI/CD gave us</h3>
+    <ul>
+      <li>Repeatable releases</li>
+      <li>Automated testing</li>
+      <li>Confidence + velocity</li>
+    </ul>
+  </div>
+  <div class="col red">
+    <h3>But it did not give us</h3>
+    <ul>
+      <li>Systematized modernization</li>
+      <li>Drift detection</li>
+      <li>An upgrade path</li>
+    </ul>
+  </div>
+</div>
+
+<div class="big muted" style="font-size:0.85em; margin-top:0.4em">We made it easier to ship <span class="warn">outdated software</span>, faster.</div>
+
+---
+
+<span class="kicker teal">the shift</span>
+
+## Refactoring belongs in CI/CD
+
+<img src="images/pipeline-workflow.svg" alt="CI/CD pipeline plus a continuous remediation workflow: detect, rewrite, pull request, merge" style="height: 620px"/>
+
+---
+
+## What OpenRewrite is
+
+<div class="frame">
+<pre><code>type: specs.openrewrite.org/v1beta/recipe
+name: org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5
+</code></pre>
+</div>
+
+<div class="big" style="font-size:1.05em; margin-top:0.3em">Migrations as <span class="accent">code</span>.</div>
+
+<div class="muted" style="font-size:0.75em">A recipe encodes a transformation once. Then it runs, the same way, everywhere.</div>
+
+---
+
+<span class="kicker teal">the shift</span>
+
+<div class="big">Refactoring is a <span class="accent">process</span>,<br/>not a project.</div>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<!-- .slide: data-background-image="./images/bg-hero.svg" data-background-size="cover" -->
+
+<span class="kicker teal">live demo · 18 minutes</span>
+
+## Analyze → Upgrade → Patch
+
+<div class="big" style="font-size:1.05em">Spring Boot 2.6 / Java 8<br/>to the demo's Boot 4.1 / Java 27 target</div>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.6em">Watch the plan, the dependency changes, and the evidence.<br/>Which result would convince you this application is ready?</div>
+<div class="muted" style="font-size:0.5em; margin-top:0.6em">Spring Application Advisor is a Broadcom product built on OpenRewrite. DaShaun works at Broadcom.</div>
+
+---
+
+## Three checkpoints, one application
+
+<table>
+<tr><th>Checkpoint</th><th>What we observe</th></tr>
+<tr><td>Analyze</td><td>Build metadata, CycloneDX SBOM, Trivy findings</td></tr>
+<tr><td>Upgrade</td><td>Migration plan, changed dependencies, app health</td></tr>
+<tr><td>Patch</td><td>Patch changes, refreshed SBOM, another scan</td></tr>
+</table>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.6em">Compare findings, component counts, startup time, and process memory at each stage.</div>
+
+<div style="font-size:0.65em; margin-top:0.6em"><a href="http://localhost:4173/" target="_blank" rel="noopener">Open the running live demo</a> · <a href="https://github.com/dashaun-tanzu/saa-patch-2-6-trivy-exec">Public demo repository</a></div>
+
+---
+
+## What did the demo establish?
+
+<ul style="font-size:0.8em">
+<li>The plan and diff show what changed</li>
+<li>A refreshed SBOM lets us scan the new graph</li>
+<li>Health checks confirm the app responds</li>
+<li>Behavioral tests and release review still matter</li>
+</ul>
+
+<div class="muted" style="font-size:0.65em; margin-top:0.6em">Trivy findings depend on the database and scanned components. Zero findings would not establish that the application has no vulnerabilities. Startup and RSS are observations from this run, not a controlled benchmark.</div>
+
+---
+
+## What should we repeat across 400 repos?
+
+<div class="cols">
+<div class="col teal"><h3>Share</h3><ul><li>The migration recipe</li><li>The version and configuration</li><li>The evidence each PR must include</li></ul></div>
+<div class="col violet"><h3>Verify per application</h3><ul><li>Repository-specific changes</li><li>Behavior and integration contracts</li><li>Readiness to release</li></ul></div>
+</div>
+
+<div class="muted" style="font-size:0.75em; margin-top:0.6em">Now consider the same workflow with an AI agent making the migration decisions.</div>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<!-- .slide: data-background-image="./images/bg-hero.svg" data-background-size="cover" -->
+
+<span class="kicker violet">the question I get every week</span>
+
+## "Why not just use AI?"
+
+<div class="big muted" style="font-size:0.9em">We just saw a recipe-based workflow. What changes if an agent performs each migration?</div>
+
+
+---
+
+## Same prompt. Different diffs.
+
+<img src="images/ai-vs-recipe.svg" alt="Illustration of repeated agent runs versus reapplying a fixed recipe to the same input" style="height: 600px"/>
+
+
+---
+
+<span class="kicker violet">consistency</span>
+
+## What agents maintaining real codebases taught us
+
+<div class="stats">
+  <div class="stat">
+    <div class="n red">233</div>
+    <div class="l">days of evolution per task</div>
+  </div>
+  <div class="stat">
+    <div class="n red">71</div>
+    <div class="l">consecutive commits</div>
+  </div>
+  <div class="stat">
+    <div class="n red">20/20</div>
+    <div class="l">models below human MI score</div>
+  </div>
+</div>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.5em">SWE-CI (2026) &middot; Alibaba Group &amp; Sun Yat-sen University &middot; <a href="https://arxiv.org/html/2603.03823v4#S4.SS4">arXiv 2603.03823v4, §4.4</a></div>
+<div class="muted" style="font-size:0.7em">Successfully solved tasks in Python repositories; comparison with human oracle code.</div>
+
+
+---
+
+<span class="kicker violet">cost</span>
+
+## Who pays for the repeated reasoning?
+
+<div class="cols">
+<div class="col violet"><h3>Agent per repository</h3><ul><li>Gather context again</li><li>Infer the migration again</li><li>Review each set of decisions</li></ul></div>
+<div class="col teal"><h3>Shared recipe</h3><ul><li>Encode the migration decision</li><li>Version and test the transformation</li><li>Apply it to each matching codebase</li></ul></div>
+</div>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.5em">Self-hosted inference still consumes hardware, energy, and time.<br/>Recipe execution, testing, and review also have a cost.</div>
+<div class="muted" style="font-size:0.5em; margin-top:0.6em">Adapted from <a href="https://dashaun.com/spring-boot-4-1-sweet-and-sour/#/">Spring Boot 4.1: Sweet &amp; Sour</a>, Application Advisor section.</div>
+
+
+---
+
+## The cost of a migration
+
+<div class="big" style="font-size:1.15em">Inference + execution + <span class="gold">review</span><br/>+ verification + rework</div>
+
+<div class="muted" style="font-size:0.75em; margin-top:0.7em">Measure the whole path to a change you can release.<br/>A faster first diff may still need more review.</div>
+<div class="muted" style="font-size:0.5em; margin-top:0.6em">Adapted from <a href="https://dashaun.com/spring-boot-4-1-sweet-and-sour/#/">Spring Boot 4.1: Sweet &amp; Sour</a>, Application Advisor section.</div>
+
+
+---
+
+<span class="kicker violet">consistency</span>
+
+## Variation creates review decisions
+
+<div class="cols">
+<div class="col violet"><h3>Per-repo decisions</h3><ul><li>Which dependency replaces this one?</li><li>Which tests should change?</li><li>Does this cleanup belong here?</li></ul></div>
+<div class="col teal"><h3>Shared decisions</h3><ul><li>Named recipe and version</li><li>Explicit matching conditions</li><li>Tests for changes and non-changes</li></ul></div>
+</div>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.5em">Repositories differ. A reusable transformation should explain which differences matter.</div>
+<div class="muted" style="font-size:0.5em; margin-top:0.6em">Adapted from <a href="https://dashaun.com/spring-boot-4-1-sweet-and-sour/#/">Spring Boot 4.1: Sweet &amp; Sour</a>, Application Advisor section.</div>
+
+
+---
+
+## Repeatability has conditions
+
+<ul style="font-size:0.8em">
+<li>Pin recipe versions and configuration</li>
+<li>Control inputs, dependency resolution, and toolchain</li>
+<li>Test representative repository variations</li>
+<li>Review generated diffs and verify behavior</li>
+</ul>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.6em">A repeatable transformation still needs evidence that it is correct.</div>
+
+
+---
+
+<span class="kicker amber">discussion · 3 minutes</span>
+
+## One upgrade, 400 repositories
+
+<div class="big" style="font-size:1.05em">30 minutes of review per PR<br/>= <span class="gold">200 review-hours</span></div>
+
+<ul style="font-size:0.75em; margin-top:0.7em">
+<li>Which decisions could a shared recipe capture?</li>
+<li>Which behavior must each application verify?</li>
+<li>What would you measure before scaling?</li>
+</ul>
+
+<div class="muted" style="font-size:0.55em; margin-top:0.6em">Illustrative workload. No assumed savings; every generated PR still needs review.</div>
+
+
+---
+
+## Write once. Run everywhere.
+
+<img src="images/recipe-reuse.svg" alt="One versioned recipe generates repository-specific pull requests across an organization" style="height: 560px"/>
+
+
+---
+
+<span class="kicker violet">so which is it?</span>
+
+<div class="big">AI writes the <span class="violet">recipes</span>.</div>
+<div class="big">Recipes apply the <span class="accent">change</span>.</div>
+
+<div class="muted" style="font-size:0.75em; margin-top:0.3em">Use AI to draft and investigate. Version the reusable transformation. Test and review every application.</div>
+
+
+---
+
+## An AI-assisted recipe workflow
+
+<table>
+<tr><th>Step</th><th>Evidence</th></tr>
+<tr><td>Describe the migration</td><td>Before and after examples</td></tr>
+<tr><td>Ask AI to draft a recipe</td><td>Matching rules and tests</td></tr>
+<tr><td>Review the transformation</td><td>Scope, exclusions, expected diff</td></tr>
+<tr><td>Pilot on representative repos</td><td>Builds, behavior, review time</td></tr>
+<tr><td>Version and expand</td><td>Traceable PRs and rollout results</td></tr>
+</table>
+<div class="muted" style="font-size:0.5em; margin-top:0.6em">Adapted from <a href="https://dashaun.com/spring-boot-4-1-sweet-and-sour/#/">Spring Boot 4.1: Sweet &amp; Sour</a>, Application Advisor section.</div>
+
+
+---
+
+## Where an agent still helps
+
+<ul style="font-size:0.8em">
+<li>Explore unfamiliar APIs and explain failures</li>
+<li>Draft recipes and characterization tests</li>
+<li>Investigate exceptions a recipe cannot handle</li>
+<li>Propose application-specific design changes</li>
+</ul>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.6em">Keep the scope explicit. Verify suggestions against application behavior.</div>
+<div class="muted" style="font-size:0.5em; margin-top:0.6em">Adapted from <a href="https://dashaun.com/spring-boot-4-1-sweet-and-sour/#/">Spring Boot 4.1: Sweet &amp; Sour</a>, Application Advisor section.</div>
+
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<!-- .slide: data-background-image="./images/bg-hero.svg" data-background-size="cover" -->
+
+<span class="kicker teal">the destination</span>
+
+## N-0, continuously
+
+<div class="big" style="font-size:1.5em">N-0 means: on the <span class="accent">latest patch</span>.</div>
+<div class="big muted" style="font-size:0.9em">Of the JVM. Of Spring Boot. Of everything you ship.</div>
+<div class="big muted" style="font-size:0.9em">Always. Not "when we get to it."</div>
+
+---
+
+## Two ways to age
+
+<img src="images/n0-stairs.svg" alt="Continuous small steps stay near the top versus one terrifying big-bang upgrade" style="height: 580px"/>
+
+---
+
+## What N-0 buys you
+
+<div class="cols">
+  <div class="col teal">
+    <h3>security</h3>
+    <ul>
+      <li>Shorter path from CVE to tested patch</li>
+      <li>CVEs become traffic, not fires</li>
+      <li>Visible patch status</li>
+    </ul>
+  </div>
+  <div class="col amber">
+    <h3>performance</h3>
+    <ul>
+      <li>New GC, virtual threads, AOT</li>
+      <li>Measure startup, memory, and throughput</li>
+      <li>Validate gains under your workload</li>
+    </ul>
+  </div>
+  <div class="col violet">
+    <h3>people</h3>
+    <ul>
+      <li>Modern tools attract talent</li>
+      <li>Less yak shaving</li>
+      <li>Boring upgrades, happy teams</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+<span class="kicker teal">compounding</span>
+
+<div class="big">Every day on N-0, the <span class="accent">next day is cheaper</span>.</div>
+<div class="big muted" style="font-size:0.9em">Every day on N-6, the <span class="warn">upgrade gets bigger</span>.</div>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<span class="kicker amber">frontline stories</span>
+
+## Good, Better, Best
+
+<img src="images/gbb-ladder.svg" alt="Three tiers: good, better, best" style="height: 520px"/>
+
+<div class="muted" style="font-size:0.7em">What I actually see, across orgs, industries, and continents, in 2026.</div>
+
+---
+
+## Good
+
+<div class="cols">
+  <div class="col blue">
+    <ul>
+      <li>One flagship app on N-0: Java 25, Boot 4.x</li>
+      <li>OpenRewrite run <strong>manually</strong>, by hand</li>
+      <li>CVEs blocked at the production gate</li>
+    </ul>
+    <h3>the catch</h3>
+    <ul class="red">
+      <li>Nothing scales past that one team</li>
+      <li>Patching N-2 to N-1 still leaves CVEs open</li>
+      <li>The fix depends on who remembers how</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## Better
+
+<div class="cols">
+  <div class="col teal">
+    <ul>
+      <li>Remediation workflow in CI, for a growing set of repos</li>
+      <li>Dependency visibility: what's end-of-life, and where</li>
+      <li>One "dead" dependency, migrated off</li>
+      <li>Even the untouched apps stay on N-0</li>
+      <li>Outcomes measured in dollars</li>
+    </ul>
+  </div>
+</div>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.5em">The tell: the app nobody develops anymore still gets its patches.</div>
+
+---
+
+## Best
+
+<div class="cols">
+  <div class="col amber">
+    <ul>
+      <li>Remediation runs org-wide, as its own workflow</li>
+      <li>Proactive: "what's next", not "what broke"</li>
+      <li>Named owners maintain the shared recipes</li>
+      <li>New repos onboard monthly, pulled by gravity</li>
+      <li>Legacy has an owner and an upgrade plan</li>
+    </ul>
+  </div>
+</div>
+
+---
+
+## How do you pick<br/>which repos to start with?
+
+> "I chose all of them."
+<span class="who">Dov Katz</span>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+
+
+<span class="kicker teal">the comparison</span>
+
+## Same repo. Same ask. Three roads.
+
+<div class="cols">
+  <div class="col teal">
+    <h3>Advisor</h3>
+    <div class="muted" style="font-size:0.68em">OpenRewrite</div>
+    <ul>
+      <li>versioned upgrade workflow</li>
+    </ul>
+  </div>
+  <div class="col blue">
+    <h3>Codex</h3>
+    <div class="muted" style="font-size:0.68em">agent CLI</div>
+    <ul>
+      <li>independent upgrade run</li>
+    </ul>
+  </div>
+  <div class="col violet">
+    <h3>Claude</h3>
+    <div class="muted" style="font-size:0.68em">agent CLI</div>
+    <ul>
+      <li>independent upgrade run</li>
+    </ul>
+  </div>
+</div>
+
+<div class="muted" style="font-size:0.72em; margin-top:0.4em">Boot 2.7 / Java 8 to Boot 4.x / Java 25. Captured upgrade results.</div>
+
+
+<div class="muted" style="font-size:0.55em">Advisor is Spring Application Advisor, a Broadcom product built on OpenRewrite. DaShaun works at Broadcom.</div>
+
+---
+
+## A passing build can miss a page
+
+<div class="cols">
+  <div class="col red">
+    <h3>One mapping</h3>
+    <pre><code class="language-java">@GetMapping("/greeting")</code></pre>
+    <p style="font-size:0.7em">After the framework upgrade:<br/><code>/greeting</code> → 200<br/><code>/greeting/</code> → 404</p>
+  </div>
+  <div class="col teal">
+    <h3>Preserve both paths</h3>
+    <pre><code class="language-java">@GetMapping({
+  "/greeting", "/greeting/"
+})</code></pre>
+    <p style="font-size:0.7em">Both paths → 200<br/>Same greeting, with or without a name.</p>
+  </div>
+</div>
+
+<div class="muted" style="font-size:0.65em; margin-top:0.5em">Keep the endpoint assertions. Run verify. Boot the packaged app and check the pages.</div>
+
+---
+
+
+## What the captured runs show
+
+<table>
+<tr><th>Evidence</th><th>Advisor</th><th>Codex, runs 1 / 2</th><th>Claude, runs 1 / 2</th></tr>
+<tr><td class="l">capture date</td><td>Oct 29</td><td>Oct 29</td><td>Oct 29</td></tr>
+<tr><td class="l">engine / model</td><td>OpenRewrite</td><td>gpt-6.1-sol</td><td>claude-opus-5-5</td></tr>
+<tr><td class="l">Boot version</td><td>4.1.2.1</td><td>4.1.2</td><td>4.1.2</td></tr>
+<tr><td class="l">tests</td><td>5/5</td><td>5/5</td><td>5/5</td></tr>
+<tr><td class="l">Java 25 + six pages</td><td>verified</td><td>both verified</td><td>both verified</td></tr>
+<tr><td class="l">upgrade time</td><td>14:42</td><td>0:55 / 1:05</td><td>0:47 / 1:05</td></tr>
+<tr><td class="l">repeat comparison</td><td>identical tracked diff</td><td>different tracked diffs</td><td>different tracked diffs</td></tr>
+</table>
+
+<div class="muted" style="font-size:0.55em; margin-top:0.5em">Oct 29, 2026 verification. Agent repeats: Oct 29; Advisor repeats: Oct 25 &amp; 26. <a href="#/9">Open the captured record</a>.</div>
+<div class="muted" style="font-size:0.5em; margin-top:0.4em">Same baseline and task; models, settings, and release channels differ. Time excludes verification. Two runs per tool do not establish a speed ranking or consistency rate. Advisor is a Broadcom product; DaShaun works at Broadcom.</div>
+
+---
+
+## What does the reviewer have to decide?
+
+<div class="cols">
+  <div class="col blue">
+    <h3>Changes in these runs</h3>
+    <ul>
+      <li>Codex: HTTP test in run 2</li>
+      <li>Claude: different test starters</li>
+      <li>Both: README edits to review</li>
+    </ul>
+  </div>
+  <div class="col teal">
+    <h3>Share the transformation</h3>
+    <ul>
+      <li>Version the migration recipe</li>
+      <li>Reuse the design decisions</li>
+      <li>Test and review every generated PR</li>
+    </ul>
+  </div>
+</div>
+
+<div class="muted" style="font-size:0.75em; margin-top:0.5em">Reading a small diff is easy.<br/>Deciding whether the changes belong is the cost.</div>
+
+<div class="muted" style="font-size:0.7em; margin-top:0.5em">The 400-repository exercise makes this visible: shared decisions can reduce repeated reasoning. Measure review time to find out.</div>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<!-- .slide: data-background-image="./images/bg-hero.svg" data-background-size="cover" -->
+
+<span class="kicker">the takeaways</span>
+
+## Three things to take home
+
+<div class="cols">
+  <div class="col teal">
+    <h3>one</h3>
+    <div class="big" style="font-size:0.85em">Refactoring gets its own <span class="accent">workflow</span>.</div>
+  </div>
+  <div class="col violet">
+    <h3>two</h3>
+    <div class="big" style="font-size:0.85em">Recipes for the change. AI for the <span class="violet">craft</span>.</div>
+  </div>
+  <div class="col amber">
+    <h3>three</h3>
+    <div class="big" style="font-size:0.85em">Stay on <span class="gold" style="white-space:nowrap">N-0</span>. Continuously.</div>
+  </div>
+</div>
+
+---
+
+<!-- .slide: data-background-image="./images/bg-hero.svg" data-background-size="cover" -->
+
+## Q&amp;A
+
+<div class="big teal" style="font-size:1.2em">15 minutes</div>
+
+<div class="muted" style="font-size:0.75em">Which migration is waiting?<br/>What would make the next upgrade safe to release?</div>
+
+<div class="muted" style="font-size:0.6em; margin-top:0.6em"><a href="https://dashaun.com">dashaun.com</a> &middot; <a href="https://github.com/openrewrite">github.com/openrewrite</a> &middot; @dashaun</div>
+</script>
+</section>
+				<section data-markdown data-separator="^]]]" data-separator-vertical="^---">
+<script type="text/template">
+<span id="captured-results"></span>
+
+## Captured upgrade results
+
+<table>
+<tr><th>Evidence</th><th>Advisor</th><th>Codex, runs 1 / 2</th><th>Claude, runs 1 / 2</th></tr>
+<tr><td class="l">capture date</td><td>Oct 29</td><td>Oct 29</td><td>Oct 29</td></tr>
+<tr><td class="l">engine / model</td><td>OpenRewrite</td><td>gpt-6.1-sol</td><td>claude-opus-5-5</td></tr>
+<tr><td class="l">Boot version</td><td>4.1.2.1</td><td>4.1.2</td><td>4.1.2</td></tr>
+<tr><td class="l">tests</td><td>5/5</td><td>5/5</td><td>5/5</td></tr>
+<tr><td class="l">Java 25 + six pages</td><td>verified</td><td>both verified</td><td>both verified</td></tr>
+<tr><td class="l">upgrade time</td><td>14:42</td><td>0:55 / 1:05</td><td>0:47 / 1:05</td></tr>
+<tr><td class="l">CLI-reported tokens</td><td>0</td><td>210,078 / 262,703</td><td>190,518 / 221,632</td></tr>
+<tr><td class="l">repeat comparison</td><td>identical tracked diff</td><td>different tracked diffs</td><td>different tracked diffs</td></tr>
+</table>
+
+<div class="muted" style="font-size:0.55em; margin-top:0.6em">Oct 29, 2026 verification. Time excludes verification. Token accounting differs by CLI; zero tokens is not zero total cost. <a href="#/8">Return to the takeaways</a>.</div>
+
+
+<div class="muted" style="font-size:0.55em">Same baseline and task; models, workflow settings, and release channels differ. Agent repeats: Oct 29; Advisor repeats: Oct 25 &amp; 26, 2026. Two runs per tool do not establish a controlled speed ranking or consistency rate. Advisor is Spring Application Advisor, a Broadcom product built on OpenRewrite. DaShaun works at Broadcom.</div>
+</script>
+</section>
+			</div>
+		</div>
+
+		<div class="deck-foot">
+			<span>DASHAUN CARTER</span>
+			<span>REFACTORING THE ROI OF SOFTWARE &middot; Fiserv</span>
+		</div>
+
+		<script src="./reveal.js/dist/reveal.js"></script>
+		<script src="./reveal.js/plugin/markdown/markdown.js"></script>
+		<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+
+		<script>
+			Reveal.initialize({
+				width: 1280,
+				height: 720,
+				margin: 0.06,
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				hash: true,
+				transition: 'fade',
+				transitionSpeed: 'fast',
+				backgroundTransition: 'fade',
+				plugins: [ RevealMarkdown, RevealHighlight ]
+			});
+			Reveal.configure({
+				pdfSeparateFragments: false,
+				pdfMaxPagesPerSlide: 1
+			});
+		</script>
+	</body>
+</html>

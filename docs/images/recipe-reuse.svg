@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" font-family="-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#134E4A"/>
+      <stop offset="100%" stop-color="#0F2E3A"/>
+    </linearGradient>
+  </defs>
+
+  <style>
+    .h { font-size: 30px; font-weight: 800; fill: #EAF2FC; }
+    .mono { font-family: Menlo, Consolas, monospace; font-size: 22px; }
+    .repo { font-size: 23px; font-weight: 700; fill: #EAF2FC; }
+    .sub { font-size: 20px; font-weight: 600; fill: #93A8C4; }
+    .flow { stroke: #2DD4BF; stroke-width: 2.5; fill: none; stroke-opacity: 0.7; }
+  </style>
+
+  <!-- recipe card, center left -->
+  <g transform="translate(80, 200)">
+    <rect width="440" height="400" rx="20" fill="url(#card)" stroke="#2DD4BF" stroke-width="2"/>
+    <rect width="440" height="64" rx="20" fill="#2DD4BF" fill-opacity="0.12"/>
+    <text x="24" y="42" class="h" fill="#2DD4BF" font-size="26">rewrite.yml &#8212; write once</text>
+    <text class="mono" x="24" y="120" fill="#EAF2FC">type: specs.gradle</text>
+    <text class="mono" x="24" y="158" fill="#EAF2FC">  &gt; 8.x to 25.x</text>
+    <text class="mono" x="24" y="196" fill="#93A8C4">type: spring.boot</text>
+    <text class="mono" x="24" y="234" fill="#93A8C4">  &gt; 2.7 to 4.x</text>
+    <text class="mono" x="24" y="272" fill="#93A8C4">type: cve remediation</text>
+    <text class="mono" x="24" y="310" fill="#93A8C4">  &gt; all findings</text>
+    <text x="24" y="366" class="sub" fill="#2DD4BF">reviewed once. versioned. tested.</text>
+    <animate attributeName="opacity" values="1;0.85;1" dur="4s" repeatCount="indefinite"/>
+  </g>
+
+  <!-- fan-out lines to repos -->
+  <g>
+    <path class="flow" d="M 520 300 C 660 300, 700 180, 860 180"/>
+    <path class="flow" d="M 520 340 C 680 340, 720 300, 860 300"/>
+    <path class="flow" d="M 520 380 C 680 380, 720 420, 860 420"/>
+    <path class="flow" d="M 520 420 C 660 420, 700 540, 860 540"/>
+    <path class="flow" d="M 520 460 C 640 460, 680 640, 860 640"/>
+
+    <!-- pulse traveling outward -->
+    <circle r="6" fill="#2DD4BF">
+      <animateMotion dur="2.5s" repeatCount="indefinite" path="M 520 300 C 660 300, 700 180, 860 180"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF">
+      <animateMotion dur="2.5s" begin="-2s" repeatCount="indefinite" path="M 520 340 C 680 340, 720 300, 860 300"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF">
+      <animateMotion dur="2.5s" begin="-1.5s" repeatCount="indefinite" path="M 520 380 C 680 380, 720 420, 860 420"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF">
+      <animateMotion dur="2.5s" begin="-1s" repeatCount="indefinite" path="M 520 420 C 660 420, 700 540, 860 540"/>
+    </circle>
+    <circle r="6" fill="#2DD4BF">
+      <animateMotion dur="2.5s" begin="-0.5s" repeatCount="indefinite" path="M 520 460 C 640 460, 680 640, 860 640"/>
+    </circle>
+  </g>
+
+  <!-- repo stack -->
+  <g>
+    <g transform="translate(880, 140)">
+      <rect width="540" height="76" rx="14" fill="#111C2F" stroke="#223350"/>
+      <text x="26" y="48" class="repo">service-payments</text>
+      <text x="470" y="46" class="mono" fill="#2DD4BF" font-size="20">PR #1</text>
+    </g>
+    <g transform="translate(880, 260)">
+      <rect width="540" height="76" rx="14" fill="#111C2F" stroke="#223350"/>
+      <text x="26" y="48" class="repo">service-orders</text>
+      <text x="470" y="46" class="mono" fill="#2DD4BF" font-size="20">PR #1</text>
+    </g>
+    <g transform="translate(880, 380)">
+      <rect width="540" height="76" rx="14" fill="#111C2F" stroke="#223350"/>
+      <text x="26" y="48" class="repo">service-inventory</text>
+      <text x="470" y="46" class="mono" fill="#2DD4BF" font-size="20">PR #1</text>
+    </g>
+    <g transform="translate(880, 500)">
+      <rect width="540" height="76" rx="14" fill="#111C2F" stroke="#223350"/>
+      <text x="26" y="48" class="repo">web-portal</text>
+      <text x="470" y="46" class="mono" fill="#2DD4BF" font-size="20">PR #1</text>
+    </g>
+    <g transform="translate(880, 620)">
+      <rect width="540" height="76" rx="14" fill="#111C2F" stroke="#223350"/>
+      <text x="26" y="48" class="repo">&#8230; and 395 more repositories</text>
+      <text x="470" y="46" class="mono" fill="#2DD4BF" font-size="20">PR #1</text>
+    </g>
+  </g>
+
+  <text x="120" y="680" class="h" fill="#2DD4BF" font-size="28">consistency at scale.</text>
+  <text x="120" y="722" class="sub" fill="#EAF2FC">shared transformation. repository-specific diffs, tests, and review.</text>
+</svg>
